@@ -1,0 +1,25 @@
+{% comment %}
+  This snippet displays related products based on the product tags.
+{% endcomment %}
+
+{% assign current_product = product %}
+{% assign related_products = collections.all.products | where: "tags", current_product.tags[0] | limit: 4 %}
+
+{% if related_products.size > 0 %}
+  <div class="related-products">
+    <h3>Related Products</h3>
+    <div class="related-products-grid">
+      {% for related_product in related_products %}
+        {% if related_product.id != current_product.id %}
+          <div class="related-product">
+            <a href="{{ related_product.url }}">
+              <img src="{{ related_product.featured_image | img_url: 'medium' }}" alt="{{ related_product.title }}">
+              <p>{{ related_product.title }}</p>
+              <p>{{ related_product.price | money }}</p>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
